@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>SVRX Suggestions Web</title>
+  <meta name="description" content="Anonymous feedback form for SVRX — share your ideas or report an issue anonymously." />
+
+  <style>
+    :root{--bg-1:#031026;--bg-2:#06283f;--card:#0b1626;--ink:#e8f5ff;--muted:#9fb6da;--accent:#2b6ef6;--accent-2:#68a5ff;--glass:rgba(255,255,255,0.03);--radius:18px;--shadow:0 22px 60px rgba(2,6,23,0.6);--ease:cubic-bezier(.16,.84,.3,1);--max-width:980px;--content-gap:20px;--touch-size:52px}
+    *{box-sizing:border-box}html{font-size:16px}@media(min-width:1200px){html{font-size:18px}}body{margin:0;font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial;color:var(--ink);background:linear-gradient(120deg,var(--bg-1),var(--bg-2));min-height:100vh;display:flex;align-items:center;justify-content:center;padding:28px}
+    .bg-wrap{position:fixed;inset:0;z-index:-2;pointer-events:none;overflow:hidden}
+    .bg-gradient{position:absolute;inset:0;background:radial-gradient(800px 300px at 10% 10%, rgba(104,165,255,0.06), transparent 10%), radial-gradient(700px 300px at 90% 90%, rgba(43,110,246,0.05), transparent 10%);background-size:200% 200%;animation:bgShift 22s linear infinite}
+    @keyframes bgShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+    .bg-specks{position:absolute;inset:0;opacity:0.06;background-image:radial-gradient(circle at 10% 20%, rgba(255,255,255,0.08) 0.5px, transparent 1px),radial-gradient(circle at 80% 70%, rgba(255,255,255,0.06) 0.5px, transparent 1px);background-size:180px 180px}
+    .stage{width:100%;max-width:var(--max-width);display:flex;flex-direction:column;gap:18px}
+    .page-title{font-weight:800;font-size:clamp(1.1rem,2.6vw,2.0rem);text-align:center;margin:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:0.4px}
+    .page-sub{color:var(--muted);text-align:center;margin-top:6px;font-size:0.95rem}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:var(--radius);padding:26px;box-shadow:var(--shadow);border:1px solid rgba(255,255,255,0.04);position:relative;overflow:visible;backdrop-filter:blur(6px);animation:cardIn .7s var(--ease) .2s both}
+    @keyframes cardIn{from{opacity:0;transform:translateY(18px) scale(.995)}to{opacity:1;transform:none}}
+    .card-header{display:flex;align-items:center;gap:16px}
+    .logo{width:72px;height:72px;border-radius:14px;display:grid;place-items:center;font-weight:900;font-size:18px;color:#04202a;background:linear-gradient(135deg,var(--accent-2),var(--accent));box-shadow:0 12px 40px rgba(43,110,246,0.14);transform:translateY(0);animation:logoFloat 4s ease-in-out infinite}
+    @keyframes logoFloat{0%{transform:translateY(0)}50%{transform:translateY(-6px)}100%{transform:translateY(0)}}
+    .header-title{flex:1}.header-title h2{margin:0;font-size:1.25rem;line-height:1.05}.header-title p{margin:6px 0 0;color:var(--muted);font-size:0.95rem}
+    .form-grid{display:grid;grid-template-columns:1fr 360px;gap:var(--content-gap);margin-top:18px}@media(max-width:920px){.form-grid{grid-template-columns:1fr}}
+    label{display:block;font-size:13px;color:var(--muted);margin-bottom:8px}input,select,textarea{width:100%;padding:12px 14px;border-radius:12px;background:var(--glass);border:1px solid rgba(255,255,255,0.035);color:inherit;font-size:15px;transition:box-shadow .24s var(--ease),transform .18s var(--ease)}textarea{min-height:160px;resize:vertical}input:focus,select:focus,textarea:focus{box-shadow:0 14px 36px rgba(59,130,246,0.08);transform:translateY(-3px)}
+    .panel{padding:16px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent)}.hint{color:var(--accent-2);font-weight:600;margin-bottom:10px}.meta-row{display:flex;justify-content:space-between;align-items:center;margin-top:10px;color:var(--muted);font-size:13px}
+    .aside{display:flex;flex-direction:column;gap:12px}.tips{font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:8px;margin-top:8px}.tip{display:flex;align-items:flex-start;gap:8px}.bullet{width:8px;height:8px;border-radius:50%;background:linear-gradient(180deg,var(--accent),var(--accent-2));margin-top:6px}
+    .actions{display:flex;gap:12px;align-items:center}.btn{padding:12px 16px;border-radius:12px;border:0;cursor:pointer;font-weight:700}.btn-primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#012033;box-shadow:0 14px 40px rgba(43,110,246,0.12);position:relative;overflow:hidden}.btn-primary::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,rgba(255,255,255,0.06),transparent 40%);opacity:0;transform:translateX(-30%) skewX(-12deg);transition:all .9s var(--ease)}.btn-primary:hover::after{opacity:1;transform:translateX(30%) skewX(-12deg)}.btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)}
+    .fab{display:none;position:fixed;right:18px;bottom:18px;width:var(--touch-size);height:var(--touch-size);border-radius:999px;align-items:center;justify-content:center;background:linear-gradient(90deg,var(--accent),var(--accent-2));box-shadow:0 18px 36px rgba(43,110,246,0.18);z-index:40;color:#012033;font-weight:800}@media(max-width:640px){.fab{display:flex}}
+    .status{display:none;padding:12px;border-radius:10px;text-align:center}.status.ok{display:block;background:linear-gradient(90deg, rgba(59,130,246,0.06), rgba(104,165,255,0.03));color:var(--accent-2)}.status.err{display:block;background:rgba(255,110,110,0.06);color:#ff8a8a}
+    .card{transition:transform .18s var(--ease),box-shadow .18s var(--ease)}.card.tilt{box-shadow:0 30px 70px rgba(2,6,23,0.75)}@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}:focus{outline:none}input:focus,select:focus,textarea:focus{outline:3px solid rgba(59,130,246,0.08)}
+  </style>
+</head>
+<body>
+  <!-- Background layers -->
+  <div class="bg-wrap" aria-hidden="true">
+    <div class="bg-gradient"></div>
+    <div class="bg-specks"></div>
+  </div>
+
+  <div class="stage">
+    <h1 class="page-title">SVRX Suggestions Web</h1>
+    <p class="page-sub">Your ideas help shape SVRX — anonymous and simple.</p>
+
+    <main class="card" id="card" role="main" aria-labelledby="heading">
+      <div class="card-header">
+        <div class="logo" id="logo">SV</div>
+        <div class="header-title">
+          <h2 id="heading">Anonymous Feedback Box</h2>
+          <p>Send your feedback or suggestions to help improve SVRX.</p>
+        </div>
+      </div>
+
+      <form name="feedback" method="POST" data-netlify="false" novalidate autocomplete="off">
+        <input type="hidden" name="form-name" value="feedback">
+        <input type="hidden" name="bot-field" />
+
+        <div class="form-grid">
+          <section class="panel left">
+            <div class="hint">Be clear and brief — examples help us act faster.</div>
+
+            <label for="type">Feedback type</label>
+            <select id="type" name="type" required>
+              <option value="">Select type</option>
+              <option>Suggestion</option>
+              <option>Issue</option>
+              <option>Other</option>
+            </select>
+
+            <label for="message" style="margin-top:12px">Message</label>
+            <textarea id="message" name="message" maxlength="1200" required placeholder="Describe your feedback or idea clearly and briefly."></textarea>
+
+            <div class="meta-row">
+              <div>We read every message.</div>
+              <div id="count" aria-live="polite">0 / 1200</div>
+            </div>
+
+            <div class="tips" aria-hidden="false">
+              <div class="tip"><span class="bullet"></span><div>Add steps or examples if possible.</div></div>
+              <div class="tip"><span class="bullet"></span><div>Choose “Suggestion” if you’re unsure.</div></div>
+            </div>
+          </section>
+
+          <aside class="aside">
+            <section class="panel">
+              <label for="impact">Priority (optional)</label>
+              <select id="impact" name="impact">
+                <option value="">Select priority</option>
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+              </select>
+
+              <label for="extra" style="margin-top:12px">Additional details (optional)</label>
+              <input id="extra" name="extra" placeholder="Add examples or notes if needed" />
+
+              <div class="actions" style="margin-top:12px">
+                <button type="submit" class="btn btn-primary" id="sendBtn">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="margin-right:8px;vertical-align:middle"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z" stroke="white" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span class="send-anim">Send Feedback</span>
+                </button>
+                <button type="reset" class="btn btn-ghost">Clear</button>
+              </div>
+
+              <div id="status" class="status" role="status" aria-live="polite"></div>
+              <p class="note">✅ Your submission is anonymous and private.</p>
+            </section>
+          </aside>
+        </div>
+      </form>
+    </main>
+
+    <button class="fab" id="fab" aria-label="Send feedback quickly">⇧</button>
+  </div>
+
+  <!-- Pre-entry overlay: name + email required before using form -->
+  <div id="entryOverlay" style="position:fixed;inset:0;display:grid;place-items:center;background:rgba(2,6,23,0.78);z-index:60">
+    <div style="width:min(620px,94%);background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:22px;border-radius:14px;text-align:left;box-shadow:0 20px 50px rgba(2,6,23,0.6)">
+      <h2 style="margin:0 0 8px;color:var(--ink)">Welcome — quick info</h2>
+      <p style="margin:0 0 12px;color:var(--muted)">Please enter your name and email before continuing. We use these to follow up if needed.</p>
+
+      <label style="display:block;margin:8px 0 6px;color:var(--muted)">Name</label>
+      <input id="visitorName" placeholder="Your full name" style="width:100%;padding:10px;border-radius:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.04);color:var(--ink)">
+
+      <label style="display:block;margin:8px 0 6px;color:var(--muted)">Email</label>
+      <input id="visitorEmail" placeholder="name@example.com" type="email" style="width:100%;padding:10px;border-radius:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.04);color:var(--ink)">
+
+      <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:14px">
+        <button id="entryContinue" style="padding:10px 12px;border-radius:10px;background:linear-gradient(90deg,#2b6ef6,#68a5ff);border:0;color:#012033;font-weight:700">Continue</button>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:8px">We treat your contact info privately. If you prefer to be fully anonymous, enter a name/email you control.</p>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      // Elements
+      const form = document.querySelector('form[name="feedback"]');
+      const msg = document.getElementById('message');
+      const count = document.getElementById('count');
+      const status = document.getElementById('status');
+      const card = document.getElementById('card');
+      const fab = document.getElementById('fab');
+      const overlay = document.getElementById('entryOverlay');
+      const nameIn = document.getElementById('visitorName');
+      const emailIn = document.getElementById('visitorEmail');
+      const cont = document.getElementById('entryContinue');
+
+      // Draft autosave
+      const DRAFT_KEY = 'svrx_feedback_draft_v1';
+      function saveDraft(){
+        try{ localStorage.setItem(DRAFT_KEY, JSON.stringify({type: form.type?.value || '', impact: form.impact?.value || '', extra: form.extra?.value || '', message: msg.value || ''})); }
+        catch(e){}
+      }
+      function restoreDraft(){
+        try{ const raw = localStorage.getItem(DRAFT_KEY); if(!raw) return; const d = JSON.parse(raw); if(d.type) form.type.value = d.type; if(d.impact) form.impact.value = d.impact; if(d.extra) form.extra.value = d.extra; if(d.message) msg.value = d.message; updateCount(); }
+        catch(e){}
+      }
+      msg && msg.addEventListener('input', ()=>{ updateCount(); saveDraft(); });
+
+      // Character counter
+      function updateCount(){ if(count && msg) count.textContent = (msg.value || '').length + ' / 1200'; }
+      updateCount(); restoreDraft();
+
+      // Entry overlay logic
+      (function handleOverlay(){
+        const stored = (()=>{ try{ return JSON.parse(sessionStorage.getItem('svrx_visitor')||'null'); }catch(e){return null;} })();
+        if(stored && stored.name && stored.email){ overlay.style.display = 'none'; nameIn.value = stored.name; emailIn.value = stored.email; }
+        else overlay.style.display = '';
+
+        cont.addEventListener('click', ()=>{
+          const name = nameIn.value && nameIn.value.trim();
+          const email = emailIn.value && emailIn.value.trim();
+          if(!name || !email){ alert('Please enter both name and email to continue.'); return; }
+          if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ alert('Please enter a valid email.'); return; }
+          sessionStorage.setItem('svrx_visitor', JSON.stringify({name,email})); overlay.style.display='none';
+        });
+      })();
+
+      // Parallax tilt
+      let bounds=null; function onPointerMove(e){ if(window.matchMedia('(hover: none)').matches) return; if(!bounds) bounds=card.getBoundingClientRect(); const cx=bounds.left+bounds.width/2; const cy=bounds.top+bounds.height/2; const dx=(e.clientX-cx)/bounds.width; const dy=(e.clientY-cy)/bounds.height; const rx = (-dy*5).toFixed(2); const ry = (dx*6).toFixed(2); card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg)`; card.classList.add('tilt'); }
+      function onPointerLeave(){ card.style.transform='none'; card.classList.remove('tilt'); bounds=null; }
+      window.addEventListener('pointermove', onPointerMove); window.addEventListener('pointerleave', onPointerLeave);
+
+      // Form submit to backend /api/feedback
+      async function handleSubmit(e){
+        e.preventDefault();
+        const visitor = JSON.parse(sessionStorage.getItem('svrx_visitor')||'null');
+        if(!visitor || !visitor.name || !visitor.email){ alert('Please enter your name and email before submitting.'); return; }
+
+        const payload = { name: visitor.name, email: visitor.email, type: form.type?.value || '', message: msg?.value || '', impact: form.impact?.value || '', extra: form.extra?.value || '' };
+        if(!payload.type || !payload.message){ alert('Please choose a feedback type and write your message.'); return; }
+
+        status.style.display='block'; status.className='status'; status.textContent='Sending...';
+        try{
+          const res = await fetch('/api/feedback', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
+          const json = await res.json();
+          if(res.ok && json.ok){ status.classList.add('ok'); status.textContent='Feedback sent successfully!'; form.reset(); updateCount(); localStorage.removeItem(DRAFT_KEY); subtleSuccess(); }
+          else { throw new Error(json && json.error ? json.error : 'Server error'); }
+        }catch(err){ console.error(err); status.classList.add('err'); status.textContent='Something went wrong. Please try again.'; }
+      }
+      form.addEventListener('submit', handleSubmit);
+
+      // FAB behavior
+      fab.addEventListener('click', ()=>{ msg.focus(); window.scrollTo({top: card.offsetTop-20, behavior:'smooth'}); });
+
+      // subtle success
+      function subtleSuccess(){ const logo=document.getElementById('logo'); if(logo) logo.animate([{transform:'scale(1)'},{transform:'scale(1.06)'},{transform:'scale(1)'}],{duration:520,easing:'cubic-bezier(.2,.9,.2,1)'}); const check=document.createElement('div'); check.style.position='absolute'; check.style.inset='0'; check.style.display='grid'; check.style.placeItems='center'; check.style.pointerEvents='none'; check.style.zIndex='40'; check.innerHTML = `<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="60" cy="60" r="54" stroke="rgba(104,165,255,0.18)" stroke-width="8" fill="rgba(59,130,246,0.06)" /><path d="M36 62l12 10 36-38" stroke="#dff2ff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" /></svg>`; document.body.appendChild(check); setTimeout(()=>{ check.style.transition='opacity .45s ease'; check.style.opacity='0'; setTimeout(()=>check.remove(),450); },700); }
+
+      // ctrl/cmd+enter submit
+      msg.addEventListener('keydown',(ev)=>{ if((ev.ctrlKey||ev.metaKey)&&ev.key==='Enter'){ ev.preventDefault(); form.requestSubmit(); } });
+
+      // reduced-motion
+      if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){ document.documentElement.style.setProperty('--ease','linear'); }
+
+      // expose helpers
+      window.svrx={saveDraft:()=>saveDraft(),restoreDraft:()=>restoreDraft(),subtleSuccess};
+    })();
+  </script>
+</body>
+</html>
