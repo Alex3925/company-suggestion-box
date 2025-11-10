@@ -1,7 +1,7 @@
 {
   "name": "svrx-suggestions-web",
-  "version": "1.0.0",
-  "description": "SVRX Suggestions Web (Express + MySQL)",
+  "version": "1.2.0",
+  "description": "SVRX Suggestions Web (Express + MySQL/Aiven + Basic Auth)",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
