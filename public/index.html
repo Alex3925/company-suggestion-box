@@ -38,7 +38,6 @@
       radial-gradient(circle at 10% 20%, rgba(255,255,255,0.08) 0.5px, transparent 1px),
       radial-gradient(circle at 80% 70%, rgba(255,255,255,0.06) 0.5px, transparent 1px); background-size:180px 180px}
 
-    /* Stage */
     .stage{width:100%;max-width:var(--max-width);display:flex;flex-direction:column;gap:14px;padding:10px}
     .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
     .brand{display:flex;align-items:center;gap:12px}
@@ -54,7 +53,6 @@
     .discord-card{display:flex;align-items:center;gap:10px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);padding:8px;border-radius:10px;border:1px solid rgba(255,255,255,0.03)}
     .discord-card img{width:44px;height:44px;border-radius:8px;object-fit:cover}
 
-    /* Main card */
     .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:16px;padding:20px;box-shadow:var(--shadow);border:1px solid rgba(255,255,255,0.04);backdrop-filter:blur(6px)}
     .card-header{display:flex;align-items:center;gap:16px}
     .logo{width:64px;height:64px;border-radius:12px;overflow:hidden;background:#000;flex-shrink:0}
@@ -62,7 +60,6 @@
     .header-title h2{margin:0;font-size:1.15rem}
     .header-title p{margin:6px 0 0;color:var(--muted);font-size:0.95rem}
 
-    /* Form layout */
     .form-grid{display:grid;grid-template-columns:1fr 360px;gap:18px;margin-top:16px;align-items:start}
     @media(max-width:980px){ .form-grid{ grid-template-columns:1fr; } .card-header{flex-direction:row;gap:12px} .logo{width:56px;height:56px} }
     label{display:block;font-size:13px;color:var(--muted);margin-bottom:8px}
@@ -83,7 +80,6 @@
     .status.ok{display:block;background:linear-gradient(90deg, rgba(59,130,246,0.06), rgba(104,165,255,0.03));color:var(--accent-2)}
     .status.err{display:block;background:rgba(255,110,110,0.06);color:#ff8a8a}
 
-    /* Footer */
     footer{margin-top:12px;color:var(--muted);font-size:13px;text-align:center}
     footer .staff{display:block;margin-top:6px;font-weight:700;color:var(--muted)}
 
@@ -169,14 +165,21 @@
 
             <div class="tips" style="margin-top:12px">
               <div class="tip"><span class="bullet"></span><div>Add steps, device & browser when reporting issues.</div></div>
-              <div class="tip"><span class="bullet"></span><div>Prefer anonymity? Enter an alias or temporary email at the overlay.</div></div>
+              <div class="tip"><span class="bullet"></span><div>Prefer anonymity? Enter an alias or temporary email below.</div></div>
             </div>
           </section>
 
           <!-- Right: meta / actions -->
           <aside style="display:flex;flex-direction:column;gap:12px">
             <section style="padding:12px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent)">
-              <label for="impact">Priority (optional)</label>
+              <!-- Name & Email moved into the main form and required on submit -->
+              <label for="visitorName">Your name</label>
+              <input id="visitorName" name="visitorName" placeholder="Your name or alias" required>
+
+              <label for="visitorEmail" style="margin-top:12px">Your email</label>
+              <input id="visitorEmail" name="visitorEmail" type="email" placeholder="name@example.com" required>
+
+              <label for="impact" style="margin-top:12px">Priority (optional)</label>
               <select id="impact" name="impact">
                 <option value="">No preference</option>
                 <option value="low">Low</option>
@@ -196,7 +199,7 @@
               </div>
 
               <div id="status" class="status" role="status" aria-live="polite"></div>
-              <p style="color:var(--muted);margin-top:10px;font-size:13px">✅ Your submission is anonymous to other users and private to staff.</p>
+              <p style="color:var(--muted);margin-top:10px;font-size:13px">✅ Your submission is only visible to staff. If you want full anonymity, use an alias and disposable email.</p>
             </section>
 
             <!-- Sidebar Discord embed -->
@@ -224,30 +227,9 @@
     </footer>
   </div>
 
-  <!-- Pre-entry overlay: collect name + email -->
-  <div id="entryOverlay" style="position:fixed;inset:0;display:grid;place-items:center;background:rgba(2,6,23,0.78);z-index:70">
-    <div style="width:min(640px,94%);background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:20px;border-radius:12px;text-align:left;box-shadow:0 20px 50px rgba(2,6,23,0.6)">
-      <h3 style="margin:0 0 8px;color:var(--ink)">Welcome — quick info</h3>
-      <p style="margin:0 0 12px;color:var(--muted)">Please enter your name and email so we can follow up if necessary. If you prefer anonymity, use an alias or temporary email.</p>
-
-      <label style="display:block;margin-top:8px;color:var(--muted)">Name</label>
-      <input id="visitorName" placeholder="Your name" style="width:100%;padding:10px;border-radius:8px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.04);color:var(--ink)">
-
-      <label style="display:block;margin-top:8px;color:var(--muted)">Email</label>
-      <input id="visitorEmail" type="email" placeholder="name@example.com" style="width:100%;padding:10px;border-radius:8px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.04);color:var(--ink)">
-
-      <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:14px">
-        <!-- IMPORTANT: type="button" prevents accidental form submit -->
-        <button id="entryContinue" type="button" style="padding:10px 12px;border-radius:10px;background:linear-gradient(90deg,#2b6ef6,#68a5ff);border:0;color:#012033;font-weight:700">Continue</button>
-      </div>
-      <p style="font-size:12px;color:var(--muted);margin-top:8px">We keep contact details private and only use them to follow up about your suggestion.</p>
-    </div>
-  </div>
-
   <script>
     (function(){
       // ===== CONFIG =====
-      // Replace with your real server invite URL:
       const DISCORD_INVITE_URL = 'https://discord.gg/ZEzx9dgk66';
 
       // Elements
@@ -256,14 +238,9 @@
       const count = document.getElementById('count');
       const status = document.getElementById('status');
       const card = document.getElementById('card');
-      const fab = document.getElementById('fab');
-      const overlay = document.getElementById('entryOverlay');
-      const nameIn = document.getElementById('visitorName');
-      const emailIn = document.getElementById('visitorEmail');
-      const cont = document.getElementById('entryContinue');
+      const nameField = document.getElementById('visitorName');
+      const emailField = document.getElementById('visitorEmail');
       const themeToggle = document.getElementById('themeToggle');
-      const themeLabel = document.getElementById('themeLabel');
-      const iconMoon = document.getElementById('iconMoon');
       const joinDiscord = document.getElementById('joinDiscord');
       const joinDiscordSidebar = document.getElementById('joinDiscordSidebar');
       const copyInvite = document.getElementById('copyInvite');
@@ -292,15 +269,17 @@
         draw();
       })();
 
-      // Draft autosave
-      const DRAFT_KEY = 'svrx_feedback_draft_v2';
+      // Draft autosave (now includes name & email)
+      const DRAFT_KEY = 'svrx_feedback_draft_v3';
       function saveDraft(){
         try{
           localStorage.setItem(DRAFT_KEY, JSON.stringify({
             type: form.type?.value || '',
             impact: form.impact?.value || '',
             extra: form.extra?.value || '',
-            message: msg.value || ''
+            message: msg.value || '',
+            name: nameField?.value || '',
+            email: emailField?.value || ''
           }));
         } catch(e){}
       }
@@ -313,38 +292,17 @@
           if(d.impact) form.impact.value = d.impact;
           if(d.extra) form.extra.value = d.extra;
           if(d.message) msg.value = d.message;
+          if(d.name && nameField) nameField.value = d.name;
+          if(d.email && emailField) emailField.value = d.email;
           updateCount();
         } catch(e){}
       }
       if(msg) msg.addEventListener('input', ()=>{ updateCount(); saveDraft(); });
+      if(nameField) nameField.addEventListener('input', saveDraft);
+      if(emailField) emailField.addEventListener('input', saveDraft);
 
       function updateCount(){ if(count && msg) count.textContent = (msg.value || '').length + ' / 1200'; }
       updateCount(); restoreDraft();
-
-      // ENTRY OVERLAY: defensive click handler (fixed)
-      (function handleOverlay(){
-        const stored = (()=>{ try{ return JSON.parse(sessionStorage.getItem('svrx_visitor')||'null'); }catch(e){return null;} })();
-        if(stored && stored.name && stored.email){
-          overlay.style.display = 'none';
-          nameIn.value = stored.name; emailIn.value = stored.email;
-        } else {
-          overlay.style.display = ''; // show
-        }
-
-        // Important: type="button" already prevents default, but be defensive
-        cont.addEventListener('click', (e)=>{
-          if(e && typeof e.preventDefault === 'function') e.preventDefault();
-          const name = nameIn.value && nameIn.value.trim();
-          const email = emailIn.value && emailIn.value.trim();
-          if(!name || !email){ alert('Please enter both name and email to continue.'); return; }
-          if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ alert('Please enter a valid email.'); return; }
-          sessionStorage.setItem('svrx_visitor', JSON.stringify({name,email}));
-          overlay.style.display='none';
-          // focus the form first input so user can continue instantly
-          const firstInput = document.getElementById('type') || document.getElementById('message') || document.getElementById('extra');
-          if(firstInput && typeof firstInput.focus === 'function') firstInput.focus();
-        });
-      })();
 
       // Parallax tilt (desktop)
       let bounds=null;
@@ -357,4 +315,66 @@
         const dy = (e.clientY - cy) / bounds.height;
         const rx = (-dy * 5).toFixed(2);
         const ry = (dx * 6).toFixed(2);
-        card.style.tran
+        card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+        card.classList.add('tilt');
+      }
+      function onPointerLeave(){ card.style.transform='none'; card.classList.remove('tilt'); bounds=null; }
+      window.addEventListener('pointermove', onPointerMove);
+      window.addEventListener('pointerleave', onPointerLeave);
+
+      // THEME
+      function applyTheme(theme){
+        if(theme === 'light') document.documentElement.setAttribute('data-theme','light');
+        else document.documentElement.removeAttribute('data-theme');
+        localStorage.setItem('svrx_theme', theme);
+        const label = document.getElementById('themeLabel');
+        if(label) label.textContent = (theme === 'light') ? 'Light' : 'Dark';
+        const moon = document.getElementById('iconMoon');
+        if(moon) moon.style.display = (theme === 'light') ? 'none' : 'inline-block';
+      }
+      (function initTheme(){
+        const saved = localStorage.getItem('svrx_theme') || (window.matchMedia && window.matchMedia('(prefers-color-scheme:light)').matches ? 'light' : 'dark');
+        applyTheme(saved);
+      })();
+      const themeToggleEl = document.getElementById('themeToggle');
+      if(themeToggleEl) themeToggleEl.addEventListener('click', ()=>{
+        const cur = localStorage.getItem('svrx_theme') || 'dark';
+        applyTheme(cur === 'dark' ? 'light' : 'dark');
+      });
+
+      // Form submit: now validates name & email from the visible form
+      async function handleSubmit(e){
+        e.preventDefault();
+
+        // gather visitor info from the form fields
+        const visitorName = nameField?.value && nameField.value.trim();
+        const visitorEmail = emailField?.value && emailField.value.trim();
+
+        if(!visitorName || !visitorEmail){
+          alert('Please enter your name and email before submitting.');
+          return;
+        }
+        if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(visitorEmail)){
+          alert('Please enter a valid email address.');
+          return;
+        }
+
+        const payload = {
+          name: visitorName,
+          email: visitorEmail,
+          type: form.type?.value || '',
+          message: msg?.value || '',
+          impact: form.impact?.value || '',
+          extra: form.extra?.value || ''
+        };
+
+        if(!payload.type || !payload.message){
+          alert('Please choose a feedback type and write your message.');
+          return;
+        }
+
+        status.style.display='block'; status.className='status'; status.textContent='Sending...';
+        try{
+          const res = await fetch('/api/feedback', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
+          const json = await res.json();
+          if(res.o
