@@ -2,90 +2,88 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>SVRX Suggestions Web</title>
   <meta name="description" content="Anonymous feedback form for SVRX — share your ideas or report an issue anonymously." />
   <style>
     :root{
       --bg-1:#031026;--bg-2:#06283f;--card:#0b1626;--ink:#e8f5ff;--muted:#9fb6da;
-      --accent:#2b6ef6;--accent-2:#68a5ff;--glass:rgba(255,255,255,0.03);--radius:16px;
-      --shadow:0 22px 60px rgba(2,6,23,0.6);--ease:cubic-bezier(.16,.84,.3,1);
-      --max-width:1080px;--gap:18px;--touch:52px;font-sans:Inter,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial;
-      --content-pad:20px;
+      --accent:#2b6ef6;--accent-2:#68a5ff;--glass:rgba(255,255,255,0.03);
+      --radius:14px;--shadow:0 22px 60px rgba(2,6,23,0.6);--ease:cubic-bezier(.16,.84,.3,1);
+      --container:1080px;--pad:18px;--touch:52px;font-sans:Inter,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial;
     }
     [data-theme="light"]{
-      --bg-1:#f5f8ff;--bg-2:#eaf4ff;--card:#ffffff;--ink:#04202a;--muted:#567089;
-      --glass:rgba(2,6,23,0.04);--shadow:0 18px 50px rgba(3,10,24,0.06);
+      --bg-1:#f5f8ff;--bg-2:#eaf4ff;--card:#fff;--ink:#04202a;--muted:#567089;--glass:rgba(2,6,23,0.04);--shadow:0 18px 50px rgba(3,10,24,0.06);
     }
 
     *{box-sizing:border-box}
     html{font-size:16px}
     @media(min-width:1200px){html{font-size:18px}}
-    body{margin:0;font-family:var(--font-sans);color:var(--ink);
+    body{
+      margin:0;font-family:var(--font-sans);color:var(--ink);
       background:linear-gradient(120deg,var(--bg-1),var(--bg-2));
       min-height:100vh;display:flex;align-items:center;justify-content:center;padding:28px;
-      transition:background .45s var(--ease),color .35s var(--ease);
+      -webkit-font-smoothing:antialiased;transition:background .35s var(--ease),color .35s var(--ease);
     }
 
-    /* Background */
+    /* background subtle */
     .bg-wrap{position:fixed;inset:0;z-index:-2;pointer-events:none;overflow:hidden}
     .bg-gradient{position:absolute;inset:0;background:
       radial-gradient(800px 300px at 10% 10%, rgba(104,165,255,0.06), transparent 10%),
-      radial-gradient(700px 300px at 90% 90%, rgba(43,110,246,0.05), transparent 10%);
-      background-size:200% 200%;animation:bgShift 22s linear infinite}
+      radial-gradient(700px 300px at 90% 90%, rgba(43,110,246,0.05), transparent 10%);background-size:200% 200%;animation:bgShift 26s linear infinite}
     @keyframes bgShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
     .bg-specks{position:absolute;inset:0;opacity:0.06;background-image:
       radial-gradient(circle at 10% 20%, rgba(255,255,255,0.08) 0.5px, transparent 1px),
-      radial-gradient(circle at 80% 70%, rgba(255,255,255,0.06) 0.5px, transparent 1px); background-size:180px 180px}
+      radial-gradient(circle at 80% 70%, rgba(255,255,255,0.06) 0.5px, transparent 1px);background-size:180px 180px}
 
-    .stage{width:100%;max-width:var(--max-width);display:flex;flex-direction:column;gap:14px;padding:10px}
+    /* wrapper */
+    .stage{width:100%;max-width:var(--container);display:flex;flex-direction:column;gap:12px;padding:8px}
     .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
     .brand{display:flex;align-items:center;gap:12px}
-    .page-logo{width:72px;height:72px;border-radius:14px;overflow:hidden;box-shadow:0 10px 30px rgba(43,110,246,0.18)}
+    .page-logo{width:70px;height:70px;border-radius:12px;overflow:hidden;box-shadow:0 10px 30px rgba(43,110,246,0.14)}
     .page-logo img{width:100%;height:100%;object-fit:cover;background:#000}
-    .titles{display:flex;flex-direction:column}
-    .page-title{font-weight:800;font-size:clamp(1.05rem,2.6vw,1.5rem);margin:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-    .page-sub{color:var(--muted);margin-top:4px;font-size:0.95rem}
+    .title-col{display:flex;flex-direction:column}
+    .page-title{font-weight:800;font-size:clamp(1.05rem,2.6vw,1.6rem);margin:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .page-sub{color:var(--muted);font-size:0.95rem;margin-top:6px}
 
-    .controls{display:flex;gap:10px;align-items:center}
-    .theme-toggle{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px;border-radius:10px;cursor:pointer;color:var(--muted);display:inline-flex;align-items:center;gap:8px}
+    .controls{display:flex;align-items:center;gap:10px}
 
-    .discord-card{display:flex;align-items:center;gap:10px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);padding:8px;border-radius:10px;border:1px solid rgba(255,255,255,0.03)}
-    .discord-card img{width:44px;height:44px;border-radius:8px;object-fit:cover}
+    /* card */
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:16px;padding:18px;box-shadow:var(--shadow);border:1px solid rgba(255,255,255,0.04);backdrop-filter:blur(6px)}
+    .card-header{display:flex;align-items:center;gap:14px;margin-bottom:8px}
+    .card-header .logo{width:56px;height:56px;border-radius:10px}
+    .header-title h2{margin:0;font-size:1.1rem}
+    .header-title p{margin:6px 0 0;color:var(--muted)}
 
-    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:16px;padding:20px;box-shadow:var(--shadow);border:1px solid rgba(255,255,255,0.04);backdrop-filter:blur(6px)}
-    .card-header{display:flex;align-items:center;gap:16px}
-    .logo{width:64px;height:64px;border-radius:12px;overflow:hidden;background:#000;flex-shrink:0}
-    .logo img{width:100%;height:100%;object-fit:contain}
-    .header-title h2{margin:0;font-size:1.15rem}
-    .header-title p{margin:6px 0 0;color:var(--muted);font-size:0.95rem}
+    /* grid */
+    .form-grid{display:grid;grid-template-columns:1fr 360px;gap:18px}
+    @media(max-width:980px){ .form-grid{grid-template-columns:1fr} .card-header{gap:10px} .card-header .logo{width:48px;height:48px} }
 
-    .form-grid{display:grid;grid-template-columns:1fr 360px;gap:18px;margin-top:16px;align-items:start}
-    @media(max-width:980px){ .form-grid{ grid-template-columns:1fr; } .card-header{flex-direction:row;gap:12px} .logo{width:56px;height:56px} }
-    label{display:block;font-size:13px;color:var(--muted);margin-bottom:8px}
-    input,select,textarea{width:100%;padding:12px 14px;border-radius:12px;background:var(--glass);border:1px solid rgba(255,255,255,0.035);color:inherit;font-size:15px}
-    textarea{min-height:140px;resize:vertical}
+    label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+    input,select,textarea{width:100%;padding:11px 12px;border-radius:10px;background:var(--glass);border:1px solid rgba(255,255,255,0.035);color:inherit;font-size:15px}
+    textarea{min-height:140px;resize:vertical;line-height:1.45}
     .meta-row{display:flex;justify-content:space-between;align-items:center;margin-top:10px;color:var(--muted);font-size:13px}
 
-    .tips{font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:8px;margin-top:8px}
+    .tips{font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:8px;margin-top:10px}
     .tip{display:flex;align-items:flex-start;gap:8px}
     .bullet{width:8px;height:8px;border-radius:50%;background:linear-gradient(180deg,var(--accent),var(--accent-2));margin-top:6px}
 
-    .actions{display:flex;gap:12px;align-items:center}
-    .btn{padding:12px 16px;border-radius:12px;border:0;cursor:pointer;font-weight:700}
-    .btn-primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#012033;box-shadow:0 14px 40px rgba(43,110,246,0.12)}
+    .actions{display:flex;gap:12px;align-items:center;margin-top:12px}
+    .btn{padding:11px 14px;border-radius:10px;border:0;cursor:pointer;font-weight:700}
+    .btn-primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#012033;box-shadow:0 12px 30px rgba(43,110,246,0.12)}
     .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)}
 
-    .status{display:none;padding:12px;border-radius:10px;text-align:center;margin-top:10px}
+    .status{display:none;padding:10px;border-radius:10px;text-align:center;margin-top:10px}
     .status.ok{display:block;background:linear-gradient(90deg, rgba(59,130,246,0.06), rgba(104,165,255,0.03));color:var(--accent-2)}
     .status.err{display:block;background:rgba(255,110,110,0.06);color:#ff8a8a}
 
     footer{margin-top:12px;color:var(--muted);font-size:13px;text-align:center}
     footer .staff{display:block;margin-top:6px;font-weight:700;color:var(--muted)}
 
-    /* FAB for mobile */
-    .fab{display:none;position:fixed;right:18px;bottom:18px;width:var(--touch);height:var(--touch);border-radius:999px;align-items:center;justify-content:center;background:linear-gradient(90deg,var(--accent),var(--accent-2));box-shadow:0 18px 36px rgba(43,110,246,0.18);z-index:40;color:#012033;font-weight:800}
-    @media(max-width:640px){.fab{display:flex}}
+    /* small helpers */
+    .row {display:flex;gap:10px;align-items:center}
+    .muted {color:var(--muted);font-size:13px}
+    .small {font-size:13px;color:var(--muted)}
 
     @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
   </style>
@@ -100,54 +98,46 @@
   <div class="stage">
     <div class="topbar" role="navigation" aria-label="Top">
       <div class="brand">
-        <div class="page-logo" title="SVRX logo">
-          <!-- Put your logo file at public/logo.png -->
-          <img src="logo.png" alt="SVRX logo">
-        </div>
-        <div class="titles">
+        <div class="page-logo"><img src="logo.png" alt="SVRX logo"></div>
+        <div class="title-col">
           <div class="page-title">SVRX Suggestions Web</div>
-          <div class="page-sub">Your ideas help shape SVRX — anonymous and simple.</div>
+          <div class="page-sub">Your ideas help shape SVRX — simple & private.</div>
         </div>
       </div>
 
       <div class="controls" aria-hidden="false">
-        <div class="discord-card" id="discordCard" title="Join our Discord">
-          <img src="logo.png" alt="Server icon">
+        <div class="discord-card" title="Join our Discord" style="gap:10px;padding:8px;border-radius:10px;border:1px solid rgba(255,255,255,0.03)">
+          <img src="logo.png" alt="Discord" style="width:44px;height:44px;border-radius:8px;object-fit:cover">
           <div style="text-align:left">
             <div style="font-weight:700;font-size:13px">SVRX Community</div>
-            <div style="font-size:12px;color:var(--muted)">Discuss, report, and chat with the team.</div>
+            <div style="font-size:12px;color:var(--muted)">Chat with staff & other users.</div>
           </div>
           <div style="margin-left:8px">
             <button id="joinDiscord" class="btn btn-ghost" style="font-size:13px">Join</button>
           </div>
         </div>
 
-        <button id="themeToggle" class="theme-toggle" aria-pressed="false" title="Toggle light / dark theme">
-          <svg id="iconMoon" width="18" height="18" viewBox="0 0 24 24" fill="none" style="display:inline-block"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span id="themeLabel" style="font-size:13px;color:var(--muted)">Dark</span>
-        </button>
+        <button id="themeToggle" class="btn btn-ghost" title="Toggle theme" aria-pressed="false" style="padding:8px 10px;border-radius:10px;margin-left:6px">Theme</button>
       </div>
     </div>
 
     <main class="card" id="card" role="main" aria-labelledby="heading">
       <div class="card-header">
-        <div class="logo" id="logoWrap"><img src="logo.png" alt="SVRX logo"></div>
+        <div class="logo"><img src="logo.png" alt="SVRX logo"></div>
         <div class="header-title">
           <h2 id="heading">Anonymous Feedback Box</h2>
-          <p>Send your feedback or suggestions to help improve SVRX.</p>
+          <p class="muted">Send feedback, report issues, or share suggestions — we read every message.</p>
         </div>
       </div>
 
-      <form name="feedback" method="POST" data-netlify="false" novalidate autocomplete="off">
-        <input type="hidden" name="form-name" value="feedback">
-        <input type="hidden" name="bot-field" />
+      <!-- note: form has no method/action to avoid native POST; submission is handled by JS -->
+      <form name="feedback" novalidate autocomplete="off" onsubmit="return false;">
+        <div class="form-grid">
+          <!-- left -->
+          <section style="padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent)">
+            <div style="font-weight:600;color:var(--accent-2);margin-bottom:10px">Be clear and brief — examples help us act faster.</div>
 
-        <div class="form-grid" style="margin-top:16px">
-          <!-- Left: main inputs -->
-          <section style="padding:12px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent)">
-            <div style="font-weight:600;color:var(--accent-2);margin-bottom:8px">Be clear and brief — examples help us act faster.</div>
-
-            <label for="type">What’s this about?</label>
+            <label for="type">Feedback type</label>
             <select id="type" name="type" required>
               <option value="">Select type</option>
               <option>Suggestion</option>
@@ -155,28 +145,27 @@
               <option>Other</option>
             </select>
 
-            <label for="message" style="margin-top:12px">Tell us more</label>
-            <textarea id="message" name="message" maxlength="1200" required placeholder="Describe your feedback or idea clearly and briefly."></textarea>
+            <label for="message" style="margin-top:12px">Message</label>
+            <textarea id="message" name="message" maxlength="1200" placeholder="Describe your feedback or idea clearly and briefly." required></textarea>
 
             <div class="meta-row">
-              <div>We read every message.</div>
-              <div id="count" aria-live="polite">0 / 1200</div>
+              <div class="small">We read every message.</div>
+              <div id="count" class="small" aria-live="polite">0 / 1200</div>
             </div>
 
-            <div class="tips" style="margin-top:12px">
+            <div class="tips">
               <div class="tip"><span class="bullet"></span><div>Add steps, device & browser when reporting issues.</div></div>
-              <div class="tip"><span class="bullet"></span><div>Prefer anonymity? Enter an alias or temporary email below.</div></div>
+              <div class="tip"><span class="bullet"></span><div>Prefer anonymity? Use an alias and disposable email in the fields on the right.</div></div>
             </div>
           </section>
 
-          <!-- Right: meta / actions -->
+          <!-- right -->
           <aside style="display:flex;flex-direction:column;gap:12px">
-            <section style="padding:12px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent)">
-              <!-- Name & Email moved into the main form and required on submit -->
-              <label for="visitorName">Your name</label>
+            <section style="padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent)">
+              <label for="visitorName">Name</label>
               <input id="visitorName" name="visitorName" placeholder="Your name or alias" required>
 
-              <label for="visitorEmail" style="margin-top:12px">Your email</label>
+              <label for="visitorEmail" style="margin-top:12px">Email</label>
               <input id="visitorEmail" name="visitorEmail" type="email" placeholder="name@example.com" required>
 
               <label for="impact" style="margin-top:12px">Priority (optional)</label>
@@ -188,30 +177,26 @@
               </select>
 
               <label for="extra" style="margin-top:12px">Additional details (optional)</label>
-              <input id="extra" name="extra" placeholder="Screenshots, device, browser, or notes" />
+              <input id="extra" name="extra" placeholder="Screenshots, device, browser, or notes">
 
-              <div class="actions" style="margin-top:14px">
-                <button type="submit" class="btn btn-primary" id="sendBtn">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="margin-right:8px;vertical-align:middle"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z" stroke="white" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  <span class="send-anim">Send Feedback</span>
-                </button>
-                <button type="reset" class="btn btn-ghost">Clear</button>
+              <div class="actions">
+                <!-- IMPORTANT: type="button" so browser won't POST / -->
+                <button id="sendBtn" type="button" class="btn btn-primary">Send Feedback</button>
+                <button id="clearBtn" type="button" class="btn btn-ghost">Clear</button>
               </div>
 
               <div id="status" class="status" role="status" aria-live="polite"></div>
-              <p style="color:var(--muted);margin-top:10px;font-size:13px">✅ Your submission is only visible to staff. If you want full anonymity, use an alias and disposable email.</p>
+              <p class="small" style="margin-top:8px">✅ Submissions are visible only to staff. For full anonymity use alias + disposable email.</p>
             </section>
 
-            <!-- Sidebar Discord embed -->
-            <section style="padding:12px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);display:flex;flex-direction:column;gap:8px;">
+            <section style="padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);display:flex;flex-direction:column;gap:8px">
               <div style="display:flex;align-items:center;gap:10px">
-                <img src="logo.png" alt="Discord icon" style="width:42px;height:42px;border-radius:8px;object-fit:cover">
+                <img src="logo.png" alt="Discord" style="width:42px;height:42px;border-radius:8px;object-fit:cover">
                 <div style="flex:1">
                   <div style="font-weight:700">SVRX Community</div>
-                  <div style="font-size:13px;color:var(--muted)">Join to chat with staff, get updates, and report in real-time.</div>
+                  <div class="small">Join to chat with staff, get updates, and report in real-time.</div>
                 </div>
               </div>
-
               <div style="display:flex;gap:8px;justify-content:flex-end">
                 <button id="joinDiscordSidebar" class="btn btn-primary">Join Discord</button>
                 <button id="copyInvite" class="btn btn-ghost">Copy Invite</button>
@@ -222,159 +207,210 @@
       </form>
     </main>
 
-    <footer>
-      <div>[STAFF] Made By Fluxieee</div>
-    </footer>
+    <footer><div>[STAFF] Made By Fluxieee</div></footer>
   </div>
 
   <script>
-    (function(){
-      // ===== CONFIG =====
-      const DISCORD_INVITE_URL = 'https://discord.gg/ZEzx9dgk66';
+  (function(){
+    // ===== CONFIG =====
+    const DISCORD_INVITE_URL = 'https://discord.gg/YOUR_INVITE_CODE'; // <-- set this
 
-      // Elements
-      const form = document.querySelector('form[name="feedback"]');
-      const msg = document.getElementById('message');
-      const count = document.getElementById('count');
-      const status = document.getElementById('status');
-      const card = document.getElementById('card');
-      const nameField = document.getElementById('visitorName');
-      const emailField = document.getElementById('visitorEmail');
-      const themeToggle = document.getElementById('themeToggle');
-      const joinDiscord = document.getElementById('joinDiscord');
-      const joinDiscordSidebar = document.getElementById('joinDiscordSidebar');
-      const copyInvite = document.getElementById('copyInvite');
+    // Elements
+    const messageEl = document.getElementById('message');
+    const countEl = document.getElementById('count');
+    const sendBtn = document.getElementById('sendBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const statusEl = document.getElementById('status');
+    const nameEl = document.getElementById('visitorName');
+    const emailEl = document.getElementById('visitorEmail');
+    const typeEl = document.getElementById('type');
+    const impactEl = document.getElementById('impact');
+    const extraEl = document.getElementById('extra');
+    const joinDiscord = document.getElementById('joinDiscord');
+    const joinDiscordSidebar = document.getElementById('joinDiscordSidebar');
+    const copyInvite = document.getElementById('copyInvite');
+    const themeToggle = document.getElementById('themeToggle');
 
-      // Particles (lightweight)
-      (function initParticles(){
-        const canvas = document.getElementById('particles');
-        if(!canvas) return;
-        const ctx = canvas.getContext('2d');
-        let w = canvas.width = innerWidth, h = canvas.height = innerHeight;
-        window.addEventListener('resize', ()=>{ w = canvas.width = innerWidth; h = canvas.height = innerHeight; });
-        const particlesArr = Array.from({length:40}).map(()=>({
-          x: Math.random()*w, y: Math.random()*h, r: 0.6+Math.random()*2.8,
-          vx:(Math.random()-0.5)*0.2, vy:(Math.random()-0.5)*0.2, alpha:0.25+Math.random()*0.6
-        }));
-        function draw(){
-          ctx.clearRect(0,0,w,h);
-          for(const p of particlesArr){
-            p.x += p.vx; p.y += p.vy;
-            if(p.x<0) p.x = w; if(p.x>w) p.x=0;
-            if(p.y<0) p.y = h; if(p.y>h) p.y=0;
-            ctx.beginPath(); ctx.fillStyle = `rgba(200,230,255,${p.alpha})`; ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
-          }
-          requestAnimationFrame(draw);
-        }
-        draw();
-      })();
+    // DRAFT KEY
+    const DRAFT_KEY = 'svrx_feedback_draft_v4';
 
-      // Draft autosave (now includes name & email)
-      const DRAFT_KEY = 'svrx_feedback_draft_v3';
-      function saveDraft(){
-        try{
-          localStorage.setItem(DRAFT_KEY, JSON.stringify({
-            type: form.type?.value || '',
-            impact: form.impact?.value || '',
-            extra: form.extra?.value || '',
-            message: msg.value || '',
-            name: nameField?.value || '',
-            email: emailField?.value || ''
-          }));
-        } catch(e){}
-      }
-      function restoreDraft(){
-        try{
-          const raw = localStorage.getItem(DRAFT_KEY);
-          if(!raw) return;
-          const d = JSON.parse(raw);
-          if(d.type) form.type.value = d.type;
-          if(d.impact) form.impact.value = d.impact;
-          if(d.extra) form.extra.value = d.extra;
-          if(d.message) msg.value = d.message;
-          if(d.name && nameField) nameField.value = d.name;
-          if(d.email && emailField) emailField.value = d.email;
-          updateCount();
-        } catch(e){}
-      }
-      if(msg) msg.addEventListener('input', ()=>{ updateCount(); saveDraft(); });
-      if(nameField) nameField.addEventListener('input', saveDraft);
-      if(emailField) emailField.addEventListener('input', saveDraft);
+    // Utility: show status
+    function showStatus(kind, text){
+      statusEl.className = 'status ' + (kind === 'ok' ? 'ok' : kind === 'err' ? 'err' : '');
+      statusEl.textContent = text;
+      statusEl.style.display = text ? 'block' : 'none';
+    }
 
-      function updateCount(){ if(count && msg) count.textContent = (msg.value || '').length + ' / 1200'; }
-      updateCount(); restoreDraft();
-
-      // Parallax tilt (desktop)
-      let bounds=null;
-      function onPointerMove(e){
-        if(window.matchMedia('(hover: none)').matches) return;
-        if(!bounds) bounds = card.getBoundingClientRect();
-        const cx = bounds.left + bounds.width/2;
-        const cy = bounds.top + bounds.height/2;
-        const dx = (e.clientX - cx) / bounds.width;
-        const dy = (e.clientY - cy) / bounds.height;
-        const rx = (-dy * 5).toFixed(2);
-        const ry = (dx * 6).toFixed(2);
-        card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg)`;
-        card.classList.add('tilt');
-      }
-      function onPointerLeave(){ card.style.transform='none'; card.classList.remove('tilt'); bounds=null; }
-      window.addEventListener('pointermove', onPointerMove);
-      window.addEventListener('pointerleave', onPointerLeave);
-
-      // THEME
-      function applyTheme(theme){
-        if(theme === 'light') document.documentElement.setAttribute('data-theme','light');
-        else document.documentElement.removeAttribute('data-theme');
-        localStorage.setItem('svrx_theme', theme);
-        const label = document.getElementById('themeLabel');
-        if(label) label.textContent = (theme === 'light') ? 'Light' : 'Dark';
-        const moon = document.getElementById('iconMoon');
-        if(moon) moon.style.display = (theme === 'light') ? 'none' : 'inline-block';
-      }
-      (function initTheme(){
-        const saved = localStorage.getItem('svrx_theme') || (window.matchMedia && window.matchMedia('(prefers-color-scheme:light)').matches ? 'light' : 'dark');
-        applyTheme(saved);
-      })();
-      const themeToggleEl = document.getElementById('themeToggle');
-      if(themeToggleEl) themeToggleEl.addEventListener('click', ()=>{
-        const cur = localStorage.getItem('svrx_theme') || 'dark';
-        applyTheme(cur === 'dark' ? 'light' : 'dark');
-      });
-
-      // Form submit: now validates name & email from the visible form
-      async function handleSubmit(e){
-        e.preventDefault();
-
-        // gather visitor info from the form fields
-        const visitorName = nameField?.value && nameField.value.trim();
-        const visitorEmail = emailField?.value && emailField.value.trim();
-
-        if(!visitorName || !visitorEmail){
-          alert('Please enter your name and email before submitting.');
-          return;
-        }
-        if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(visitorEmail)){
-          alert('Please enter a valid email address.');
-          return;
-        }
-
-        const payload = {
-          name: visitorName,
-          email: visitorEmail,
-          type: form.type?.value || '',
-          message: msg?.value || '',
-          impact: form.impact?.value || '',
-          extra: form.extra?.value || ''
+    // Character counter & autosave
+    function updateCount(){
+      const len = (messageEl && messageEl.value) ? messageEl.value.length : 0;
+      if(countEl) countEl.textContent = `${len} / 1200`;
+    }
+    function saveDraft(){
+      try{
+        const draft = {
+          type: typeEl?.value || '',
+          impact: impactEl?.value || '',
+          extra: extraEl?.value || '',
+          message: messageEl?.value || '',
+          name: nameEl?.value || '',
+          email: emailEl?.value || ''
         };
+        localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+      }catch(e){}
+    }
+    function restoreDraft(){
+      try{
+        const raw = localStorage.getItem(DRAFT_KEY);
+        if(!raw) return;
+        const d = JSON.parse(raw);
+        if(d.type && typeEl) typeEl.value = d.type;
+        if(d.impact && impactEl) impactEl.value = d.impact;
+        if(d.extra && extraEl) extraEl.value = d.extra;
+        if(d.message && messageEl) messageEl.value = d.message;
+        if(d.name && nameEl) nameEl.value = d.name;
+        if(d.email && emailEl) emailEl.value = d.email;
+        updateCount();
+      }catch(e){}
+    }
 
-        if(!payload.type || !payload.message){
-          alert('Please choose a feedback type and write your message.');
-          return;
+    if(messageEl){
+      messageEl.addEventListener('input', ()=>{
+        updateCount();
+        saveDraft();
+      });
+    }
+    if(nameEl) nameEl.addEventListener('input', saveDraft);
+    if(emailEl) emailEl.addEventListener('input', saveDraft);
+    if(typeEl) typeEl.addEventListener('change', saveDraft);
+    if(impactEl) impactEl.addEventListener('change', saveDraft);
+    if(extraEl) extraEl.addEventListener('input', saveDraft);
+
+    restoreDraft();
+
+    // Prevent accidental native submit (defensive)
+    window.addEventListener('submit', function(e){
+      e.preventDefault();
+    }, true);
+
+    // Send function (AJAX)
+    async function sendFeedback(){
+      // basic validation
+      const name = nameEl?.value && nameEl.value.trim();
+      const email = emailEl?.value && emailEl.value.trim();
+      const type = typeEl?.value || '';
+      const message = messageEl?.value || '';
+      const impact = impactEl?.value || '';
+      const extra = extraEl?.value || '';
+
+      if(!name || !email){
+        showStatus('err','Please enter your name and email before submitting.');
+        if(!name) nameEl.focus();
+        else emailEl.focus();
+        return;
+      }
+      if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){
+        showStatus('err','Please enter a valid email address.');
+        emailEl.focus();
+        return;
+      }
+      if(!type || !message){
+        showStatus('err','Please choose a feedback type and write your message.');
+        return;
+      }
+
+      // disable UI
+      sendBtn.disabled = true;
+      sendBtn.textContent = 'Sending...';
+      showStatus('','');
+
+      const payload = { name, email, type, message, impact, extra };
+
+      try{
+        const res = await fetch('/api/feedback', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify(payload)
+        });
+        const json = await res.json().catch(()=>({}));
+        if(res.ok && json.ok){
+          showStatus('ok','Feedback sent successfully!');
+          // reset only message, keep name/email for convenience
+          messageEl.value = '';
+          typeEl.value = '';
+          impactEl.value = '';
+          extraEl.value = '';
+          saveDraft(); // update draft (message cleared)
+          updateCount();
+        } else {
+          const errMsg = (json && json.error) ? json.error : ('Server responded with ' + res.status);
+          showStatus('err','Submit failed: ' + errMsg);
         }
+      }catch(err){
+        console.error('Send error', err);
+        showStatus('err','Network error — please try again.');
+      } finally {
+        sendBtn.disabled = false;
+        sendBtn.textContent = 'Send Feedback';
+      }
+    }
 
-        status.style.display='block'; status.className='status'; status.textContent='Sending...';
-        try{
-          const res = await fetch('/api/feedback', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
-          const json = await res.json();
-          if(res.o
+    // hook button clicks
+    if(sendBtn) sendBtn.addEventListener('click', sendFeedback);
+    if(clearBtn) clearBtn.addEventListener('click', ()=>{
+      // clear form (but keep name/email optional)
+      typeEl.value = '';
+      messageEl.value = '';
+      impactEl.value = '';
+      extraEl.value = '';
+      updateCount();
+      saveDraft();
+      showStatus('','');
+    });
+
+    // keyboard submit (ctrl/cmd+enter)
+    if(messageEl) messageEl.addEventListener('keydown', (ev)=>{
+      if((ev.ctrlKey||ev.metaKey) && ev.key === 'Enter'){ ev.preventDefault(); sendFeedback(); }
+    });
+
+    // small success animation
+    function subtleSuccessAnim(){
+      const logo = document.querySelector('#card .logo');
+      if(logo && logo.animate){
+        logo.animate([{transform:'scale(1)'},{transform:'scale(1.06)'},{transform:'scale(1)'}],{duration:520,easing:'cubic-bezier(.2,.9,.2,1)'});
+      }
+    }
+
+    // wire discord buttons
+    function openDiscord(){ window.open(DISCORD_INVITE_URL, '_blank', 'noopener'); }
+    if(joinDiscord) joinDiscord.addEventListener('click', openDiscord);
+    if(joinDiscordSidebar) joinDiscordSidebar.addEventListener('click', openDiscord);
+    if(copyInvite) copyInvite.addEventListener('click', async ()=>{
+      try{ await navigator.clipboard.writeText(DISCORD_INVITE_URL); copyInvite.textContent = 'Copied ✓'; setTimeout(()=>copyInvite.textContent = 'Copy Invite',2000); }
+      catch(e){ alert('Copy failed — link: ' + DISCORD_INVITE_URL); }
+    });
+
+    // basic theme toggle
+    function applyTheme(theme){
+      if(theme === 'light') document.documentElement.setAttribute('data-theme','light');
+      else document.documentElement.removeAttribute('data-theme');
+      localStorage.setItem('svrx_theme', theme);
+    }
+    (function initTheme(){
+      const saved = localStorage.getItem('svrx_theme') || (window.matchMedia && window.matchMedia('(prefers-color-scheme:light)').matches ? 'light':'dark');
+      applyTheme(saved);
+    })();
+    if(themeToggle) themeToggle.addEventListener('click', ()=>{
+      const cur = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+      applyTheme(cur === 'dark' ? 'light' : 'dark');
+    });
+
+    // particles (light)
+    (function particles(){
+      const canvas = document.getElementById('particles');
+      if(!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let w = canvas.width = innerWidth, h = canvas.height = innerHeight;
+      window.addEventListener('resize', ()=>{ w = canvas.width = innerWidth; h = canvas.height = innerHeight; });
+      const arr = Array.from({length:36}).map(()=>({x:Math.random()*w,y:Math.random()*h,r:0.6+Math.random()*2.5,vx:(Math.random()-0.5)*0.25,vy:(Math.random()-0.5)*0.25,a:0.18+Math.random()*0.6}));
+      function loop(){ ctx.clearRect(0,0,w,h); for(const p of arr){ p.x+=p.vx; p.y+=p.vy; if(p.x<0)p.x=w; if(p.x>w)p.x=0; if(p.y<0)p.y=h; if(p.y>h)p.y=0; ctx.beginPath(); ctx.fillStyle=`rgba(200,230,255,${p.
